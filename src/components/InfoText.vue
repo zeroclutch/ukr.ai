@@ -4,7 +4,7 @@
 
 <template>
   <h1 class="info-box">
-    Post a <div class="highlight-wrapper"><span class="highlight highlight-text">fact</span></div> or <div class="highlight-wrapper"><span class="highlight highlight-twitter">Twitter</span></div> link about the Russia-Ukraine conflict. Our AI will verify it.
+    Post a <div class="highlight-wrapper"><span class="highlight highlight-text">fact</span></div> or <div class="highlight-wrapper"><span class="highlight highlight-twitter">Twitter</span></div> link about the Russia-Ukraine conflict. Our AI will tell you if it's misleading.
   </h1>
 </template>
 

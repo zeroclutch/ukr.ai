@@ -145,10 +145,10 @@ export default {
     position: absolute;
     display: none;
     width: 100vw;
-    height: 100vw;
+    height: 100vh;
     opacity: 0;
     z-index: 50;
-    background-color: #0000008e;
+    background-color: rgba(0, 0, 0, 0.55);
   }
 
   .globe-overlay-background.active {
@@ -162,6 +162,7 @@ export default {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    overflow: visible;
 
     width: calc(100vw - 80px);
     max-width: 500px;
@@ -170,8 +171,8 @@ export default {
 
     background-color: #ffffffdd;
     backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     border-radius: 12px;
-    border: 1px solid #000;
     
     opacity: 0;
   }
@@ -209,9 +210,8 @@ export default {
     z-index: 55;
   }
 
-  @keyframes fadeIn {
-    0% { opacity: 0; top: calc(50% - 40px) }
-    100% {opacity: 1; top: 50%; }
+  #globe-visualization .scene-container canvas {
+    width: 100vw !important;
   }
 
 </style>

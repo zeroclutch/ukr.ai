@@ -6,10 +6,11 @@ import HeaderLogo from './components/HeaderLogo.vue'
 import InfoText from './components/InfoText.vue'
 import EntryBox from './components/EntryBox.vue'
 import Globe from './components/Globe.vue'
+import ResultOverlay from './components/ResultOverlay.vue'
 </script>
 
 <script>
-const API_URL = 'https://localhost:3000'
+const API_URL = 'https://us-west2-ukrai-342604.cloudfunctions.net/response'
 
 const STAGES = {
   IDLE: 'idle',
@@ -18,10 +19,19 @@ const STAGES = {
   ERRORED: 'errored'
 }
 
+const CLASSIFICATIONS = {
+  MISLEADING: 'misleading',
+  NOT_MISLEADING: 'not_misleading',
+  UNKNOWN: 'unknown'
+}
+
 export default {
   data() {
     return {
-      stage: STAGES.IDLE
+      stage: STAGES.IDLE,
+      classification: CLASSIFICATIONS.UNKNOWN,
+      content: 'Content awareness',
+      percent: 0.75,
     }
   },
   methods: {
@@ -36,29 +46,58 @@ export default {
     async askAI(body) {
       this.stage = STAGES.LOADING
       
-      let request = fetch(API_URL, {
+      const myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+
+      console.log('Sending', body)
+      const raw = JSON.stringify(
+        body
+      );
+
+      const requestOptions = {
         method: 'POST',
-        body: JSON.stringify(body)
-      }).then(response => {
+        headers: myHeaders,
+        body: raw,
+        redirect: 'follow'
+      };
+
+      fetch("https://us-west2-ukrai-342604.cloudfunctions.net/response", requestOptions)
+      .then(response => {
         response.json()
-      })
-      .catch(err => {
+      }).catch(err => {
+        this.content = ''
+        this.percent = 0
+        this.classification = CLASSIFICATIONS.UNKNOWN
         console.error(err)
       })
 
       await Promise.all([request, this.sleep(5000)])
       .then(json => {
         // Do things with response
+        this.content = json.content || ''
+        this.classification = json.classification || ''
+        this.percent = json[json.classification] || 0
         this.stage = STAGES.COMPLETED
       })
       .catch(err => {
         // Do things with error
         this.stage = STAGES.ERRORED
-        console.error(error)
+        this.content = ''
+        this.percent = 0
+        this.classification = CLASSIFICATIONS.UNKNOWN
+        console.error(err)
       })
+    },
+    handleCompleted() {
+      this.stage = STAGES.IDLE
     },
     sleep(ms) {
       return new Promise(resolve => setTimeout(resolve, ms))
+    }
+  },
+  computed: {
+    parsedText() {
+      return this.content.replace(/  +/g, ' ')
     }
   }
 }
@@ -70,6 +109,7 @@ export default {
   <HeaderLogo />
   <InfoText />
   <EntryBox @sendMessage="sendMessageHandler"/>
+  <ResultOverlay v-if="this.stage === 'completed'" type="unknown" @completed="handleCompleted" :content="parsedText" :percent="percent" />
 </template>
 
 <style>
@@ -100,5 +140,10 @@ body {
 
 :root {
   --primary: #3502FF;
+}
+
+@keyframes fadeIn {
+  0% { opacity: 0; top: calc(50% - 40px) }
+  100% {opacity: 1; top: 50%; }
 }
 </style>

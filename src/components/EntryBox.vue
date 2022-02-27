@@ -45,7 +45,7 @@ export default {
 
 <template>
   <div class="entry-box-wrapper">
-    <textarea v-model="entry" type="text" maxlength="140" class="entry-box" placeholder="Type some information you want verified."></textarea>
+    <textarea v-model="entry" @keydown.enter="e => { e.preventDefault(); this.postMessage() }" type="text" maxlength="140" class="entry-box" placeholder="Start with a news headline, twitter link, or piece a of information."></textarea>
     <button @click="postMessage" class="submit-button" :class="{
       'is-twitter': type === ENTRIES.TWEET,
       'is-text': type === ENTRIES.TEXT || type === ENTRIES.INVALID
@@ -62,7 +62,7 @@ export default {
 .entry-box-wrapper {
   position: relative;
   left: 0;
-  margin: 0;
+  margin: 40px 0;
   width: 100%;
   z-index: 10;
 }
@@ -72,12 +72,13 @@ export default {
   min-width: 100px;
   width: 90vw;
   height: 48px;
-  max-width: 300px;
+  max-width: 400px;
   padding: 18px;
   border: none;
   top: 0;
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.251);
   border-radius: 12px;
+  font-size: 16px;
 }
 
 button.submit-button {
@@ -91,6 +92,7 @@ button.submit-button {
   width: 80px;
   height: 45px;
   backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border-radius: 12px;
   overflow: hidden;
   text-align: center;
