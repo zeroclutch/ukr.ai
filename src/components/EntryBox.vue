@@ -45,7 +45,7 @@ export default {
 
 <template>
   <div class="entry-box-wrapper">
-    <textarea v-model="entry" @keydown.enter="e => { e.preventDefault(); this.postMessage() }" type="text" maxlength="140" class="entry-box" placeholder="Start with a news headline, twitter link, or piece a of information."></textarea>
+    <textarea v-model="entry" @keydown.enter="e => { e.preventDefault(); this.postMessage() }" type="text" maxlength="140" class="entry-box" placeholder="Start with a news headline, twitter link, or piece of information."></textarea>
     <button @click="postMessage" class="submit-button" :class="{
       'is-twitter': type === ENTRIES.TWEET,
       'is-text': type === ENTRIES.TEXT || type === ENTRIES.INVALID
