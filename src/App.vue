@@ -30,8 +30,8 @@ export default {
     return {
       stage: STAGES.IDLE,
       classification: CLASSIFICATIONS.UNKNOWN,
-      content: 'Content awareness',
-      percent: 0.75,
+      content: '',
+      percent: 0.0,
     }
   },
   methods: {
