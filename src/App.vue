@@ -10,7 +10,7 @@ import ResultOverlay from './components/ResultOverlay.vue'
 </script>
 
 <script>
-const API_URL = 'https://us-west2-ukrai-342604.cloudfunctions.net/response'
+const API_URL = 'https://us-west2-ukrai-342604.cloudfunctions.net/curie223'
 
 const STAGES = {
   IDLE: 'idle',
@@ -36,13 +36,14 @@ export default {
   },
   methods: {
     async sendMessageHandler(data) {
-      const [message, type] = data
+      const [payload, type] = data
       // Open loading modal after 1000 ms
       await this.sleep(1000)
       this.askAI({
-        message, type
+        payload, type
       })
     },
+
     async askAI(body) {
       this.stage = STAGES.LOADING
       
@@ -61,10 +62,8 @@ export default {
         redirect: 'follow'
       };
 
-      fetch("https://us-west2-ukrai-342604.cloudfunctions.net/response", requestOptions)
-      .then(response => {
-        response.json()
-      }).catch(err => {
+      const request = fetch(API_URL, requestOptions)
+      .then(response => response.json()).catch(err => {
         this.content = ''
         this.percent = 0
         this.classification = CLASSIFICATIONS.UNKNOWN
@@ -72,7 +71,8 @@ export default {
       })
 
       await Promise.all([request, this.sleep(5000)])
-      .then(json => {
+      .then(res => {
+        let [json, _sleep] = res
         // Do things with response
         this.content = json.content || ''
         this.classification = json.classification || ''
@@ -109,7 +109,7 @@ export default {
   <HeaderLogo />
   <InfoText />
   <EntryBox @sendMessage="sendMessageHandler"/>
-  <ResultOverlay v-if="this.stage === 'completed'" type="unknown" @completed="handleCompleted" :content="parsedText" :percent="percent" />
+  <ResultOverlay v-if="this.stage === 'completed'" :type="classification" @completed="handleCompleted" :content="parsedText" :percent="percent" />
 </template>
 
 <style>

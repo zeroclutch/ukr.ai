@@ -2,6 +2,8 @@
 import * as THREE from 'three'
 import Globe from 'globe.gl'
 
+let world
+
 export default {
   props: {
     autoRotateSpeed: Number,
@@ -25,8 +27,9 @@ export default {
   methods: {
     toggleLoading() {
       this.loading = !this.loading
-      if(this.loading)
+      if(this.loading) {
         this.displayLoadingMessages()
+      }
     },
     async typeText(str) {
       this.loadingMessage = ''
@@ -55,7 +58,7 @@ export default {
     const RINGS_MAX_R = 5; // deg
     const RING_PROPAGATION_SPEED = 5; // deg/sec
 
-    const world = Globe()
+    world = Globe()
     .globeImageUrl('/earth-light.jpeg')
     .bumpImageUrl('https://unpkg.com/three-globe/example/img/earth-topology.png')
     .backgroundColor('#00000000')
@@ -123,6 +126,11 @@ export default {
         setTimeout(() => world.ringsData(world.ringsData().filter(r => r !== targetRing)), FLIGHT_TIME * ARC_REL_LEN);
       }, FLIGHT_TIME);
     }
+
+    window.addEventListener('resize', (event) => {
+      world.width([event.target.innerWidth])
+      world.height([event.target.innerHeight])
+    });
   }
 }
 
@@ -136,7 +144,7 @@ export default {
       {{ loadingMessage.split(' ').slice(1).join(' ') }}
     </h1>
   </div>
-  <div id="globe-visualization" @click="toggleLoading" :class="{ 'loading': isLoading }">Your browser does not have WebGL enabled.</div>
+  <div id="globe-visualization" :class="{ 'loading': isLoading }">Your browser does not have WebGL enabled.</div>
   
 </template>
 
@@ -198,20 +206,17 @@ export default {
   #globe-visualization {
     background-color: #00000000;
     position: absolute;
-    transform: scale(1) translate(0, 50%);
+    transform: scale(1) translate(-50%, 50%);
     transition: transform 0.5s;
     bottom: 0;
-    left: 0;
+    left: 50%;
     z-index: 21;
   }
 
   #globe-visualization.loading {
-    transform: scale(0.5, 0.5) translateY(25%);
+    transform: scale(0.5, 0.5) translate(-100%, 25%);
+    left: 50%;
     z-index: 55;
-  }
-
-  #globe-visualization .scene-container canvas {
-    width: 100vw !important;
   }
 
 </style>

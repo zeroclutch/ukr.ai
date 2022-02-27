@@ -1,8 +1,8 @@
 <script>
 const ENTRIES = {
-  INVALID: 0,
-  TWEET: 1,
-  TEXT: 2
+  INVALID: 'text',
+  TWEET: 'twitter',
+  TEXT: 'text'
 }
 export default {
   data() {
@@ -64,7 +64,7 @@ export default {
   left: 0;
   margin: 40px 0;
   width: 100%;
-  z-index: 10;
+  z-index: 22;
 }
 
 .entry-box {
@@ -79,6 +79,7 @@ export default {
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.251);
   border-radius: 12px;
   font-size: 16px;
+  font-weight: 500;
 }
 
 button.submit-button {
