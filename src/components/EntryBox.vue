@@ -70,13 +70,13 @@ export default {
 .entry-box {
   font-family: 'Manrope', Avenir, Helvetica, Arial, sans-serif;
   min-width: 100px;
-  width: 90vw;
+  width: 75vw;
   height: 48px;
   max-width: 400px;
   padding: 18px;
   border: none;
   top: 0;
-  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.251);
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
   border-radius: 12px;
   font-size: 16px;
   font-weight: 500;

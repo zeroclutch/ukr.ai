@@ -2,7 +2,6 @@
 import * as THREE from 'three'
 import Globe from 'globe.gl'
 
-let world
 
 export default {
   props: {
@@ -22,15 +21,23 @@ export default {
         'Working on it...',
       ],
       loadingMessage: 'Loading...',
+      world: {
+        placeholder: 'value'
+      }
     }
   },
-  methods: {
-    toggleLoading() {
-      this.loading = !this.loading
-      if(this.loading) {
+  watch: { 
+    isLoading(_oldIsLoading, newIsLoading) {
+      let bodyWidth = document.body.clientWidth
+      let bodyHeight = document.body.clientHeight
+      if(newIsLoading) {
         this.displayLoadingMessages()
+        this.world.width([Math.floor(bodyWidth * 2)])
+        // this.world.height([Math.floor(bodyHeight * 2)])
       }
-    },
+    } 
+  },
+  methods: {
     async typeText(str) {
       this.loadingMessage = ''
       for(let character of str) {
@@ -58,7 +65,7 @@ export default {
     const RINGS_MAX_R = 5; // deg
     const RING_PROPAGATION_SPEED = 5; // deg/sec
 
-    world = Globe()
+    this.world = Globe()
     .globeImageUrl('/earth-light.jpeg')
     .bumpImageUrl('https://unpkg.com/three-globe/example/img/earth-topology.png')
     .backgroundColor('#00000000')
@@ -76,6 +83,9 @@ export default {
     .ringPropagationSpeed(RING_PROPAGATION_SPEED)
     .ringRepeatPeriod(FLIGHT_TIME * ARC_REL_LEN / NUM_RINGS)
     (document.getElementById('globe-visualization'));
+
+    let world = this.world
+    window.world = world
 
     const controls = world.controls()
 
@@ -127,6 +137,8 @@ export default {
       }, FLIGHT_TIME);
     }
 
+    let bodyWidth = document.body.clientWidth
+    this.world.width([Math.floor(bodyWidth * 2)])
     window.addEventListener('resize', (event) => {
       world.width([event.target.innerWidth])
       world.height([event.target.innerHeight])
