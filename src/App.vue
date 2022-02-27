@@ -39,13 +39,14 @@ export default {
       const [payload, type] = data
       // Open loading modal after 1000 ms
       await this.sleep(1000)
+      this.stage = STAGES.LOADING
       this.askAI({
         payload, type
       })
     },
 
     async askAI(body) {
-      this.stage = STAGES.LOADING
+      console.log('updated stage', this.stage)
       
       const myHeaders = new Headers();
       myHeaders.append("Content-Type", "application/json");
@@ -98,6 +99,9 @@ export default {
   computed: {
     parsedText() {
       return this.content.replace(/  +/g, ' ')
+    },
+    isLoading() {
+      return this.stage === STAGES.LOADING
     }
   }
 }
@@ -105,7 +109,7 @@ export default {
 
 <template>
   <Background />
-  <Globe :autoRotateSpeed="3" :isLoading="stage === 'loading'" />
+  <Globe :autoRotateSpeed="3" :isLoading="isLoading" />
   <HeaderLogo />
   <InfoText />
   <EntryBox @sendMessage="sendMessageHandler"/>

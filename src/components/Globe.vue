@@ -27,30 +27,31 @@ export default {
     }
   },
   watch: { 
-    isLoading(_oldIsLoading, newIsLoading) {
+    isLoading(newIsLoading, _oldIsLoading) {
       let bodyWidth = document.body.clientWidth
-      let bodyHeight = document.body.clientHeight
+      // let bodyHeight = document.body.clientHeight
+        console.log('just updated isLoading', newIsLoading)
       if(newIsLoading) {
-        this.displayLoadingMessages()
         this.world.width([Math.floor(bodyWidth * 2)])
-        // this.world.height([Math.floor(bodyHeight * 2)])
+        this.displayLoadingMessages()
       }
     } 
   },
   methods: {
     async typeText(str) {
+      if(!this.isLoading) return false
       this.loadingMessage = ''
+      console.log('typing text', this.isLoading)
       for(let character of str) {
-        if(!this.loading) return false
         this.loadingMessage += character
-        await this.sleep(Math.round(Math.random() * 120))
+        await this.sleep(Math.round(Math.random() * 50))
       }
       return true
     },
     async displayLoadingMessages() {
       for(let message of this.loadingMessages) {
         await this.typeText(message)
-        if(!this.loading) return false
+        if(!this.isLoading) return false
         await this.sleep(2000)
       }
     },
@@ -208,7 +209,7 @@ export default {
   .loading-text {
     margin-top: 50px;
     text-align: left;
-    padding: 50px;
+    padding: 50px 20px;
   }
 
   .loading-text .loading-highlight {
