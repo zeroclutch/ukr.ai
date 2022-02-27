@@ -62,9 +62,8 @@ export default {
         </div>
         <div class="result-classification">{{ cleanType }}</div>
         <div class="result-quote">
-            {{ content ? '&ldquo;' : '' }}
-            {{ content || `We couldn't find anything for this.` }}
-            {{ content ? '&rdquo;' : '' }}</div>
+            {{ content ? '&ldquo;' : '' }}{{ content || `We couldn't find anything for this.` }}{{ content ? '&rdquo;' : '' }}
+        </div>
         <div class="result-footer">
             Having an issue with this result?<br>I'm still learning! Report it <a href="https://forms.gle/rDhdFSdwzV1QAmVLA" aria-label="Issue report form">here</a>.
         </div>

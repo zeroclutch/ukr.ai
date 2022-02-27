@@ -102,6 +102,9 @@ export default {
     },
     isLoading() {
       return this.stage === STAGES.LOADING
+    },
+    isCompleted() {
+      return this.stage === STAGES.COMPLETED
     }
   }
 }
@@ -113,7 +116,7 @@ export default {
   <HeaderLogo />
   <InfoText />
   <EntryBox @sendMessage="sendMessageHandler"/>
-  <ResultOverlay v-if="this.stage === 'completed'" :type="classification" @completed="handleCompleted" :content="parsedText" :percent="percent" />
+  <ResultOverlay v-if="isCompleted" :type="classification" @completed="handleCompleted" :content="parsedText" :percent="percent" />
 </template>
 
 <style>
