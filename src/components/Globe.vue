@@ -1,6 +1,6 @@
 <script>
-// import * as THREE from 'three'
-// import Globe from 'globe.gl'
+import * as THREE from 'three'
+import Globe from 'globe.gl'
 
 
 export default {
@@ -60,7 +60,6 @@ export default {
     }
   },
   mounted() {
-    /*
     const ARC_REL_LEN = 0.4; // relative to whole arc
     const FLIGHT_TIME = 1000;
     const NUM_RINGS = 3;
@@ -144,7 +143,7 @@ export default {
     window.addEventListener('resize', (event) => {
       world.width([event.target.innerWidth])
       world.height([event.target.innerHeight])
-    });*/
+    });
   }
 }
 
